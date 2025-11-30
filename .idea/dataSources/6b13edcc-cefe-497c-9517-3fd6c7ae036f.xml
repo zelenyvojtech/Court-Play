@@ -499,7 +499,7 @@
     <routine id="190" parent="1" name="fts5"/>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-11-30.20:53:21</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-11-30.20:57:32</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1710,7 +1710,7 @@
       <Position>9</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <foreign-key id="584" parent="557" name="users -&gt; courts">
+    <foreign-key id="584" parent="557" name="users -&gt; reservations">
       <ColNames>user_id</ColNames>
       <RefColNames>user_id</RefColNames>
       <RefTableName>users</RefTableName>

@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f724287-b3cb-4e0c-92d9-820266b72daf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/repositories/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/courts.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/price_list.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/reservations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/time_block.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/users.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/courts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/price_list.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/reservations.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/session.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/time_block.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/users.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +46,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "repositories",
+    "git-widget-placeholder": "Services",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

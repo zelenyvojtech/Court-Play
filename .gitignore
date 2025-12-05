@@ -1,9 +1,24 @@
 # --------------------
-# IDE / editor
+# Python / FastAPI
 # --------------------
-.idea/
-*.iml
-.vscode/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# build / distribuce
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# logy
+*.log
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
 
 # --------------------
 # Virtuální prostředí
@@ -15,3 +30,37 @@ ENV/
 .venv*/
 env*/
 venv*/
+
+# --------------------
+# Databáze / lokální data
+# (schéma nebo migrační SQL soubory verzovat můžeš,
+#  ale vlastní databázový soubor ne)
+# --------------------
+database/*.db
+*.sqlite
+*.sqlite3
+
+# --------------------
+# Node / frontend (Tailwind, npm)
+# --------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# build výstupy (pokud nějaké budeš mít)
+#dist/
+#public/
+#static/build/
+
+# --------------------
+# IDE / editor
+# --------------------
+.idea/
+*.iml
+.vscode/
+
+# --------------------
+# OS-specific bordel
+# --------------------
+.DS_Store
+Thumbs.db

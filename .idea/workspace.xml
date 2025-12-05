@@ -5,15 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f724287-b3cb-4e0c-92d9-820266b72daf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/services/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/auth.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/courts.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/price_list.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/reservations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/session.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/time_block.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/users.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dependencies.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/courts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/reservations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -46,6 +46,7 @@
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "Services",
     "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "D:/VŠ/VWA - projekt/app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -119,6 +120,7 @@
       <option name="presentableId" value="Default" />
       <updated>1764618674850</updated>
       <workItem from="1764618676181" duration="853000" />
+      <workItem from="1764621201275" duration="1488000" />
     </task>
     <servers />
   </component>

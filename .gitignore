@@ -1,1 +1,17 @@
+# --------------------
+# IDE / editor
+# --------------------
 .idea/
+*.iml
+.vscode/
+
+# --------------------
+# Virtuální prostředí
+# --------------------
+.venv/
+venv/
+env/
+ENV/
+.venv*/
+env*/
+venv*/

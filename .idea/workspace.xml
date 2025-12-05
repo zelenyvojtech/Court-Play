@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f724287-b3cb-4e0c-92d9-820266b72daf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip3" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip3.9" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip3.9" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/accounts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/dashboard.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/price_list.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/time_blocks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/courts.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/courts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/reservations.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/reservations.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,11 +29,6 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
@@ -46,9 +47,8 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "Services",
+    "git-widget-placeholder": "pages",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "D:/VŠ/VWA - projekt/app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -58,7 +58,7 @@
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration default="true" type="Tox" factoryName="Tox">
       <module name="Court-Play" />
@@ -124,7 +124,6 @@
       <option name="presentableId" value="Default" />
       <updated>1764618674850</updated>
       <workItem from="1764618676181" duration="853000" />
-      <workItem from="1764621201275" duration="1488000" />
     </task>
     <servers />
   </component>

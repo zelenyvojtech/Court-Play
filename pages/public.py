@@ -57,7 +57,6 @@ async def public_pricing_page(
     request: Request,
     current_user: AuthUser | None = Depends(get_current_user),
 ):
-    # pokud nechceš dynamiku, klidně vrať šablonu jen s natvrdo napsaným ceníkem
     return templates.TemplateResponse(
         "public/pricing.html",
         {
@@ -87,13 +86,13 @@ async def reservations_entry(
     current_user: AuthUser | None = Depends(get_current_user),
 ):
     if current_user is None:
-        # nepřihlášený → pošli na login
+        # nepřihlášený → login
         return RedirectResponse(
-            url=request.url_for("login_ui"),  # podle jména routy v auth.py
+            url=request.url_for("login_form"),
             status_code=303,
         )
-    # přihlášený → na kalendář / dashboard
+    # přihlášený → kalendář / dashboard
     return RedirectResponse(
-        url=request.url_for("reservations_calendar_ui"),  # viz níže
+        url=request.url_for("reservations_calendar_ui"),
         status_code=303,
     )

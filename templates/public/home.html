@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Court &amp; Play – Úvod{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero__text">
+    <p class="hero__kicker">Tenisový klub</p>
+    <h1 class="hero__title">Court &amp; Play</h1>
+    <p class="hero__subtitle">
+      Rezervace tenisových kurtů, klubové akce a vše kolem tenisu na jednom místě.
+    </p>
+
+    <div class="hero__actions">
+      <a href="{{ url_for('reservations_entry') }}" class="btn btn--primary">
+        Rezervovat kurt
+      </a>
+      <a href="{{ url_for('about_page') }}" class="btn btn--ghost">
+        O klubu
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="grid grid--3">
+  <article class="card">
+    <div class="card__label">Kurty</div>
+    <div class="card__value">4 antukové, 2 s umělým povrchem</div>
+    <p class="card__text">
+      Moderní areál s večerním osvětlením a zázemím pro hráče.
+    </p>
+  </article>
+
+  <article class="card">
+    <div class="card__label">Tréninky</div>
+    <div class="card__value">Děti, dospělí, hobby i závodní</div>
+    <p class="card__text">
+      Individuální i skupinové lekce pod vedením zkušených trenérů.
+    </p>
+  </article>
+
+  <article class="card">
+    <div class="card__label">Členství</div>
+    <div class="card__value">Výhodné balíčky</div>
+    <p class="card__text">
+      Zvýhodněné ceny kurtů, pravidelné akce a klubová atmosféra.
+    </p>
+  </article>
+</section>
+{% endblock %}

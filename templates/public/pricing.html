@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Ceník – Court &amp; Play{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Ceník</h1>
+  <p class="section__subtitle">
+    Orientační ceny kurtů a služeb klubu. Konkrétní sazby můžete spravovat
+    v administrační části aplikace.
+  </p>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Služba</th>
+        <th>Popis</th>
+        <th>Cena</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pronájem kurtu – den</td>
+        <td>1 hodina, antukový kurt</td>
+        <td>od 250 Kč</td>
+      </tr>
+      <tr>
+        <td>Pronájem kurtu – večer</td>
+        <td>1 hodina, osvětlení v ceně</td>
+        <td>od 320 Kč</td>
+      </tr>
+      <tr>
+        <td>Trénink – individuální</td>
+        <td>60 minut s trenérem</td>
+        <td>dle dohody</td>
+      </tr>
+      <tr>
+        <td>Trénink – skupinový</td>
+        <td>Max. 4 hráči</td>
+        <td>dle dohody</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="prose">
+    Uvedené ceny jsou ilustrační. Skutečné hodnoty se budou načítat z
+    interního ceníku, který spravujete v administrační části aplikace.
+  </p>
+</section>
+{% endblock %}

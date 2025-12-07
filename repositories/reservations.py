@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 from typing import List, Optional
 
-from model import Reservation, ReservationCreate, ReservationUpdate
+from model.Reservation import Reservation, ReservationCreate, ReservationUpdate
 
 
 def _row_to_reservation(row: sqlite3.Row) -> Reservation:

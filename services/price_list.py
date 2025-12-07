@@ -2,7 +2,7 @@
 import sqlite3
 from typing import List, Optional
 
-from model import PriceList, PriceListCreate, PriceListUpdate
+from model.PriceList import PriceList, PriceListCreate, PriceListUpdate
 from repositories.price_list import (
     list_price_lists as repo_list_price_lists,
     get_price_list as repo_get_price_list,

@@ -4,18 +4,15 @@ from typing import Generator, Optional
 
 from fastapi import Depends, HTTPException, Request, status
 
-from database.database import open_connection  # uprav, pokud se u tebe jmenuje jinak
-from services import (
-    AuthService,
-    AuthUser,
-    CourtsService,
-    PriceListService,
-    ReservationsService,
-    TimeBlockService,
-    UsersService,
-    session_store,
-    SESSION_COOKIE_NAME,
-)
+from database.database import open_connection
+
+from services.auth import AuthService, AuthUser
+from services.courts import CourtsService
+from services.price_list import PriceListService
+from services.reservations import ReservationsService
+from services.time_block import TimeBlockService
+from services.users import UsersService
+from services.session import session_store, SESSION_COOKIE_NAME
 
 
 # ---------- DB CONNECTION ----------

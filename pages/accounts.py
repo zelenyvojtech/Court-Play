@@ -1,11 +1,12 @@
-# pages/account.py
+# pages/accounts.py
 from fastapi import APIRouter, Depends, Form, Request, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from dependencies import require_user, get_auth_service, get_users_service
-from services import AuthUser, AuthService, UsersService
-from model import UserUpdate
+from services.auth import AuthUser, AuthService
+from services.users import UsersService
+from model.User import UserUpdate
 
 router = APIRouter(tags=["account"])
 

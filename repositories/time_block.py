@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 from typing import List, Optional
 
-from model import TimeBlock, TimeBlockCreate, TimeBlockUpdate
+from model.TimeBlock import TimeBlock, TimeBlockCreate, TimeBlockUpdate
 
 
 def _row_to_time_block(row: sqlite3.Row) -> TimeBlock:

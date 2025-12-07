@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 from typing import List, Optional
 
-from model import TimeBlock, TimeBlockCreate, TimeBlockUpdate
+from model.TimeBlock import TimeBlock, TimeBlockCreate, TimeBlockUpdate
 from repositories.time_block import (
     list_time_blocks as repo_list_time_blocks,
     list_time_blocks_for_court_between as repo_list_time_blocks_for_court_between,

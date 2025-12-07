@@ -2,7 +2,7 @@
 import sqlite3
 from typing import List, Optional
 
-from model import User, UserCreate, UserUpdate
+from model.User import User, UserCreate, UserUpdate
 from repositories.users import (
     list_users as repo_list_users,
     get_user as repo_get_user,

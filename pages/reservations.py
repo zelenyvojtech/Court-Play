@@ -22,13 +22,15 @@ from dependencies import (
     get_courts_service,
     get_price_list_service,
 )
-from services import (
-    AuthUser,
-    ReservationsService,
-    CourtsService,
-    PriceListService,
-)
-from model import Reservation, ReservationCreate, ReservationUpdate, Court, PriceList
+
+from services.auth import AuthUser
+from services.reservations import ReservationsService
+from services.courts import CourtsService
+from services.price_list import PriceListService
+
+from model.Reservation import Reservation, ReservationCreate, ReservationUpdate
+from model.Court import Court
+from model.PriceList import PriceList
 
 router = APIRouter(tags=["reservations"])
 

@@ -10,8 +10,10 @@ from dependencies import (
     get_users_service,
     get_current_user,
 )
-from services import AuthService, UsersService, AuthUser, SESSION_COOKIE_NAME, session_store
-from model import UserCreate
+from services.auth import AuthService, AuthUser
+from services.users import UsersService
+from services.session import SESSION_COOKIE_NAME, session_store
+from model.User import UserCreate
 
 router = APIRouter(tags=["auth"])
 

@@ -2,7 +2,7 @@
 import sqlite3
 from typing import List, Optional
 
-from model import Court, CourtCreate, CourtUpdate
+from model.Court import Court, CourtCreate, CourtUpdate
 from repositories.courts import (
     list_courts as repo_list_courts,
     get_court as repo_get_court,

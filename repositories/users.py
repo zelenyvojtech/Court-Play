@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 from typing import List, Optional
 
-from model import User, UserCreate, UserUpdate
+from model.User import User, UserCreate, UserUpdate
 
 
 def _row_to_user(row: sqlite3.Row) -> User:

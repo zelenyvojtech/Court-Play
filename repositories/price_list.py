@@ -2,7 +2,7 @@
 import sqlite3
 from typing import List, Optional
 
-from model import PriceList, PriceListCreate, PriceListUpdate
+from model.PriceList import PriceList, PriceListCreate, PriceListUpdate
 
 
 def _row_to_price_list(row: sqlite3.Row) -> PriceList:

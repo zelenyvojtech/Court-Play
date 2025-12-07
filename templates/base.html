@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Court &amp; Play{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- DŮLEŽITÉ: odkaz na CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar__inner container">
+    <a href="{{ url_for('home_page') }}" class="brand">Court &amp; Play</a>
+
+    <nav class="topbar__nav">
+      <a href="{{ url_for('home_page') }}">Úvod</a>
+      <a href="{{ url_for('about_page') }}">O klubu</a>
+      <a href="{{ url_for('tenis_page') }}">Tenis</a>
+      <a href="{{ url_for('public_pricing_page') }}">Ceník</a>
+      <a href="{{ url_for('contact_page') }}">Kontakt</a>
+    </nav>
+
+    <div class="topbar__auth">
+      <a href="{{ url_for('reservations_entry') }}" class="btn btn--primary">
+        Rezervace kurtů
+      </a>
+      {% if user %}
+        <a href="{{ url_for('dashboard_ui') }}" class="btn btn--ghost">
+          Moje zóna
+        </a>
+      {% else %}
+        <a href="{{ url_for('login_form') }}" class="btn btn--ghost">
+          Přihlásit
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<main class="page">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner container">
+    <div class="site-footer__brand">
+      <div class="site-footer__logo">🎾</div>
+      <p class="site-footer__text">
+        Court &amp; Play – online rezervace tenisových kurtů.
+      </p>
+    </div>
+
+    <div class="site-footer__cols">
+      <div class="site-footer__col">
+        <h3 class="site-footer__title">Kontakt</h3>
+        <p class="site-footer__line">E-mail: info@courtandplay.cz</p>
+        <p class="site-footer__line">Telefon: +420 123 456 789</p>
+      </div>
+
+      <div class="site-footer__col">
+        <h3 class="site-footer__title">Adresa</h3>
+        <p class="site-footer__line">U Tenisových kurtů 1</p>
+        <p class="site-footer__line">123 45 Tenisov</p>
+      </div>
+
+      <div class="site-footer__col">
+        <h3 class="site-footer__title">Sledujte nás</h3>
+        <p class="site-footer__line">
+          <a href="#" class="site-footer__link">Facebook</a>
+        </p>
+        <p class="site-footer__line">
+          <a href="#" class="site-footer__link">Instagram</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

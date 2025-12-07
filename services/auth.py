@@ -5,7 +5,7 @@ from typing import Optional
 
 from passlib.context import CryptContext
 
-from model import User as UserModel
+from model.User import User as UserModel
 from repositories.users import get_user_by_email
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

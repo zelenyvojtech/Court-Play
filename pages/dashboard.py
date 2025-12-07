@@ -1,46 +1,33 @@
-# pages/dashboard.py
-from datetime import datetime
-from typing import List, Optional
-
+# app/pages/dashboard.py
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from dependencies import (
-    require_user,
-    get_courts_service,
-    get_reservations_service,
-)
-from services import AuthUser, CourtsService, ReservationsService
-from model import Court, Reservation
+from dependencies import require_user, get_courts_service, get_reservations_service
+from services.auth import AuthUser
+from services.courts import CourtsService
+from services.reservations import ReservationsService
 
-router = APIRouter(tags=["dashboard"])
-
+router = APIRouter(prefix="/app", tags=["App"])
 templates = Jinja2Templates(directory="templates")
 
 
-# GET / – domovská stránka s přehledem kurtů a rezervací (pro hráče i manažery)
-@router.get("/", response_class=HTMLResponse)
-def dashboard_page(
+@router.get("/dashboard", name="dashboard_ui")
+async def dashboard_ui(
     request: Request,
     current_user: AuthUser = Depends(require_user),
     courts_service: CourtsService = Depends(get_courts_service),
     reservations_service: ReservationsService = Depends(get_reservations_service),
 ):
-    courts: List[Court] = courts_service.list_courts()
-
-    my_reservations: List[Reservation] = reservations_service.list_reservations_for_user(
-        current_user.user_id
+    courts = courts_service.get_all()
+    my_reservations = reservations_service.get_for_user(current_user.id)
+    all_reservations = (
+        reservations_service.get_all()
+        if current_user.role in ("MANAGER", "ADMIN")
+        else []
     )
 
-    all_reservations: Optional[List[Reservation]] = None
-    if current_user.role in ("MANAGER", "ADMIN"):
-        all_reservations = reservations_service.list_future_reservations(
-            now=datetime.now()
-        )
-
     return templates.TemplateResponse(
-        "dashboard.html",
+        "dashboard/index.html",
         {
             "request": request,
             "user": current_user,

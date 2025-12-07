@@ -6,8 +6,10 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from dependencies import require_admin, get_users_service
-from services import AuthUser, UsersService
-from model import User, UserUpdate
+
+from services.auth import AuthUser
+from services.users import UsersService
+from model.User import User, UserUpdate
 
 router = APIRouter(tags=["users"])
 

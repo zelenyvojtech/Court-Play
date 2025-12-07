@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 from typing import List, Optional
 
-from model import Reservation, ReservationCreate, ReservationUpdate
+from model.Reservation import Reservation, ReservationCreate, ReservationUpdate
 from repositories.reservations import (
     list_reservations as repo_list_reservations,
     list_reservations_for_user as repo_list_reservations_for_user,

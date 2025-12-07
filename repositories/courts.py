@@ -2,7 +2,7 @@
 import sqlite3
 from typing import List, Optional
 
-from model import Court, CourtCreate, CourtUpdate
+from model.Court import Court, CourtCreate, CourtUpdate
 
 
 def _row_to_court(row: sqlite3.Row) -> Court:

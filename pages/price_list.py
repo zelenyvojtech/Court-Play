@@ -6,8 +6,11 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from dependencies import require_manager, require_admin, get_price_list_service
-from services import AuthUser, PriceListService
-from model import PriceList, PriceListCreate, PriceListUpdate
+
+from services.auth import AuthUser
+from services.price_list import PriceListService
+
+from model.PriceList import PriceList, PriceListCreate, PriceListUpdate
 
 router = APIRouter(tags=["price_list"])
 

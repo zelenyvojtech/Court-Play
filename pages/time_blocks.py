@@ -7,8 +7,13 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from dependencies import require_manager, get_time_block_service, get_courts_service
-from services import AuthUser, TimeBlockService, CourtsService
-from model import TimeBlock, TimeBlockCreate, TimeBlockUpdate, Court
+
+from services.auth import AuthUser
+from services.time_block import TimeBlockService
+from services.courts import CourtsService
+
+from model.TimeBlock import TimeBlock, TimeBlockCreate, TimeBlockUpdate
+from model.Court import Court
 
 router = APIRouter(tags=["time_blocks"])
 

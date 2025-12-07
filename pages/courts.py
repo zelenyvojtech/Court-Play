@@ -6,8 +6,9 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from dependencies import require_user, require_manager, require_admin, get_courts_service
-from services import AuthUser, CourtsService
-from model import Court, CourtCreate, CourtUpdate
+from services.auth import AuthUser
+from services.courts import CourtsService
+from model.Court import Court, CourtCreate, CourtUpdate
 
 router = APIRouter(tags=["courts"])
 

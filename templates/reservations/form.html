@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Nová rezervace – Court &amp; Play{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Nová rezervace</h1>
+  <p class="section__subtitle">
+    Vyberte kurt, tarif z ceníku a datum s časem začátku rezervace.
+  </p>
+
+  {% if error %}
+    <p style="color:#b91c1c; margin-bottom:0.75rem;">
+      {{ error }}
+    </p>
+  {% endif %}
+
+  <form method="post" class="form">
+    <div class="form__field">
+      <label class="form__label" for="courts_id">Kurt</label>
+      <select id="courts_id" name="courts_id" class="form__select" required>
+        <option value="" disabled selected>Vyberte kurt…</option>
+        {% for c in courts %}
+          <option value="{{ c.courts_id }}">
+            Kurt #{{ c.courts_id }} – {{ c.court_name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form__field">
+      <label class="form__label" for="price_list_id">Tarif (doba &amp; cena)</label>
+      <select id="price_list_id" name="price_list_id" class="form__select" required>
+        <option value="" disabled selected>Vyberte tarif…</option>
+        {% for p in price_list_items %}
+          <option value="{{ p.price_list_id }}">
+            {{ p.duration_min }} min
+            | {{ p.opening_time.strftime("%H:%M") }}–{{ p.closing_time.strftime("%H:%M") }}
+            | {{ "%.0f"|format(p.base_price) }} Kč
+            (hala ×{{ "%.2f"|format(p.indoor_multiplier) }})
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form__field">
+      <label class="form__label" for="start_datetime">Začátek rezervace</label>
+      <input
+        class="form__input"
+        type="datetime-local"
+        id="start_datetime"
+        name="start_datetime"
+        required
+      >
+      <small class="form__help">
+        Datum a čas začátku. Konec se vypočítá podle zvoleného tarifu.
+      </small>
+    </div>
+
+    <div class="form__actions">
+      <button type="submit" class="btn btn--primary">
+        Vytvořit rezervaci
+      </button>
+      <a href="/reservations/me" class="btn btn--ghost">
+        Zrušit a zpět
+      </a>
+    </div>
+  </form>
+</section>
+{% endblock %}

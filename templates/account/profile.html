@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Můj profil – Court &amp; Play{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Můj profil</h1>
+  <p class="section__subtitle">
+    Základní údaje o vašem účtu.
+  </p>
+
+  {% if success %}
+    <p style="color:#047857; margin-bottom:0.75rem;">
+      {{ success }}
+    </p>
+  {% endif %}
+  {% if error %}
+    <p style="color:#b91c1c; margin-bottom:0.75rem;">
+      {{ error }}
+    </p>
+  {% endif %}
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <p><strong>E-mail:</strong> {{ user.email }}</p>
+    <p><strong>Jméno:</strong> {{ user.user_name }}</p>
+    <p><strong>Role:</strong> {{ user.role }}</p>
+  </div>
+
+  <h2 class="section__title" style="font-size:1.1rem;">Upravit jméno</h2>
+
+  <form method="post" class="form">
+    <div class="form__field">
+      <label class="form__label" for="user_name">Jméno / přezdívka</label>
+      <input
+        class="form__input"
+        type="text"
+        id="user_name"
+        name="user_name"
+        required
+        value="{{ user.user_name }}"
+      >
+    </div>
+
+    <div class="form__actions">
+      <button type="submit" class="btn btn--primary">
+        Uložit změny
+      </button>
+      <a href="/profile/password" class="btn btn--ghost">
+        Změnit heslo
+      </a>
+    </div>
+  </form>
+</section>
+{% endblock %}

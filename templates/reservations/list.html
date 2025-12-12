@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Rezervace v areálu – Court &amp; Play{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Rezervace v areálu</h1>
+  <p class="section__subtitle">
+    Přehled všech rezervací. Můžete filtrovat podle kurtu.
+  </p>
+
+  <form method="get" class="form" style="max-width:320px; margin-bottom:1rem;">
+    <div class="form__field">
+      <label class="form__label" for="courts_id">Filtrovat podle kurtu</label>
+      <select id="courts_id" name="courts_id" class="form__select">
+        <option value="">Všechny kurty</option>
+        {% for c in courts %}
+          <option value="{{ c.courts_id }}"
+                  {% if court_filter == c.courts_id %}selected{% endif %}>
+            Kurt #{{ c.courts_id }} – {{ c.court_name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form__actions">
+      <button type="submit" class="btn btn--primary">
+        Filtrovat
+      </button>
+    </div>
+  </form>
+
+  {% if reservations %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Čas</th>
+          <th>Kurt</th>
+          <th>Uživatel</th>
+          <th>Stav</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reservations %}
+          <tr>
+            <td>{{ r.start.strftime("%d.%m.%Y") }}</td>
+            <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
+            <td>Kurt #{{ r.courts_id }}</td>
+            <td>#{{ r.user_id }}</td>
+            <td>
+              {% if r.state == "PENDING" %}
+                Čeká na potvrzení
+              {% elif r.state == "CONFIRMED" %}
+                Potvrzeno
+              {% elif r.state == "CANCELLED" %}
+                Zrušeno
+              {% elif r.state == "FINISHED" %}
+                Odehráno
+              {% else %}
+                {{ r.state }}
+              {% endif %}
+            </td>
+            <td>
+              <a href="/reservations/{{ r.reservation_id }}" class="btn btn--ghost">
+                Detail
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="prose">
+      Žádné rezervace nenalezeny pro zvolené filtrování.
+    </p>
+  {% endif %}
+</section>
+{% endblock %}

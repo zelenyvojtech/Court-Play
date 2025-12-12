@@ -18,10 +18,10 @@ async def dashboard_ui(
     courts_service: CourtsService = Depends(get_courts_service),
     reservations_service: ReservationsService = Depends(get_reservations_service),
 ):
-    courts = courts_service.get_all()
+    courts = courts_service.list_courts()
     my_reservations = reservations_service.get_for_user(current_user.id)
     all_reservations = (
-        reservations_service.get_all()
+        reservations_service.list_reservations()
         if current_user.role in ("MANAGER", "ADMIN")
         else []
     )

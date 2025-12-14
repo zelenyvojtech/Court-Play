@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if mode == "edit" %}Admin | Upravit blokaci{% else %}Admin | Nová blokace{% endif %}
+{% endblock %}
+{% block header %}
+  {% if mode == "edit" %}Upravit blokaci{% else %}Nová blokace{% endif %}
+{% endblock %}
+
+{% block content %}
+{% set courts = courts|default([]) %}
+
+<section class="section">
+  <h1 class="section__title">{% if mode == "edit" %}Upravit blokaci{% else %}Přidat blokaci{% endif %}</h1>
+  <p class="section__subtitle">Blokace slouží pro turnaje, údržbu nebo zavřeno (volný interval start–end).</p>
+
+  {% if error %}
+    <div class="hint"><strong>{{ error }}</strong></div>
+  {% endif %}
+
+  <div class="card">
+    <form method="post"
+          action="{% if mode == 'edit' %}/admin/time-blocks/{{ block.time_block_id }}/edit{% else %}/admin/time-blocks/new{% endif %}">
+
+      <div class="form__field">
+        <label class="form__label" for="courts_id">Kurt</label>
+        <select class="form__select" id="courts_id" name="courts_id" required>
+          {% set selected_court = block.courts_id if block else None %}
+          {% for c in courts %}
+            <option value="{{ c.courts_id }}"
+              {% if selected_court is not none and c.courts_id == selected_court %}selected{% endif %}>
+              {{ c.court_name }} ({{ "Outdoor" if c.outdoor else "Indoor" }})
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="start_datetime">Začátek</label>
+        <input class="form__input"
+               id="start_datetime"
+               name="start_datetime"
+               type="datetime-local"
+               required
+               value="{{ block.start.isoformat(timespec='minutes') if block and block.start else '' }}">
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="end_datetime">Konec</label>
+        <input class="form__input"
+               id="end_datetime"
+               name="end_datetime"
+               type="datetime-local"
+               required
+               value="{{ block.end.isoformat(timespec='minutes') if block and block.end else '' }}">
+      </div>
+
+      <div class="hero__actions" style="margin-top:1rem;">
+        <button class="btn btn--primary" type="submit">
+          {% if mode == "edit" %}Uložit{% else %}Vytvořit{% endif %}
+        </button>
+        <a class="btn btn--ghost" href="/admin/time-blocks">Zpět</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

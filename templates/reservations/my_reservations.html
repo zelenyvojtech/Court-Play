@@ -28,10 +28,8 @@
             <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
             <td>Kurt #{{ r.courts_id }}</td>
             <td>
-              {% if r.state == "PENDING" %}
-                Čeká na potvrzení
-              {% elif r.state == "CONFIRMED" %}
-                Potvrzeno
+              {% if r.state == "CONFIRMED" %}
+                Rezervováno
               {% elif r.state == "CANCELLED" %}
                 Zrušeno
               {% elif r.state == "FINISHED" %}
@@ -49,10 +47,8 @@
             </td>
             <td>
               {% if r.state in ("PENDING", "CONFIRMED") %}
-                <form method="post" action="/reservations/{{ r.reservation_id }}/cancel" style="margin:0;">
-                  <button type="submit" class="btn btn--ghost">
-                    Stornovat
-                  </button>
+                <form method="post" action="{{ request.url_for('my_reservation_cancel', reservation_id=r.reservation_id) }}" style="margin:0;">
+                  <button type="submit" class="btn btn--ghost">Stornovat</button>
                 </form>
               {% else %}
                 –

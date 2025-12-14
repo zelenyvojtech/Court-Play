@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Detail kurtu{% endblock %}
+{% block header %}Detail kurtu{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">{{ court.court_name }}</h1>
+  <p class="section__subtitle">
+    {% if court.outdoor %}Outdoor{% else %}Indoor{% endif %} • Status: {{ court.status }}
+  </p>
+
+  <div class="card">
+    <div class="card__label">Poznámka</div>
+    <p class="card__text">{{ court.note or "—" }}</p>
+
+    <div class="hero__actions" style="margin-top: 1rem;">
+      {% if user and user.role in ("MANAGER","ADMIN") %}
+        <a class="btn btn--primary" href="/courts/{{ court.courts_id }}/edit">Upravit</a>
+      {% endif %}
+      <a class="btn btn--ghost" href="/courts">Zpět na seznam</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

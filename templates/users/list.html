@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Admin | Uživatelé{% endblock %}
+{% block header %}Správa uživatelů{% endblock %}
+
+{% block content %}
+{% set users = users|default([]) %}
+
+<section class="section">
+  <h1 class="section__title">Uživatelé</h1>
+  <p class="section__subtitle">Přehled všech uživatelů v systému.</p>
+
+  {% if users|length == 0 %}
+    <div class="card">
+      <div class="card__value">Žádní uživatelé</div>
+      <p class="card__text">V databázi není žádný uživatel.</p>
+    </div>
+  {% else %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Jméno</th>
+          <th>Role</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for u in users %}
+          {% set uid = u.user_id|default(u.id) %}
+          <tr>
+            <td>{{ uid }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.user_name|default(u.name|default("")) }}</td>
+
+            <td>
+              <form method="post" action="{{ url_for('admin_user_role_update', user_id=uid) }}" style="display:flex; gap:.5rem; align-items:center;">
+                <select name="role" class="form__select" style="min-width: 140px;">
+                  {% set cur = (u.role|default('USER'))|upper %}
+                  <option value="USER" {% if cur == "USER" %}selected{% endif %}>USER</option>
+                  <option value="MANAGER" {% if cur == "MANAGER" %}selected{% endif %}>MANAGER</option>
+                  <option value="ADMIN" {% if cur == "ADMIN" %}selected{% endif %}>ADMIN</option>
+                </select>
+                <button type="submit" class="btn btn--ghost">Uložit</button>
+              </form>
+            </td>
+
+            <td>
+              {# sem případně později: smazat, reset hesla… #}
+              —
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</section>
+{% endblock %}

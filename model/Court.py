@@ -4,7 +4,6 @@ from typing import Optional
 
 class CourtCreate(BaseModel):
     court_name: str = Field(min_length=1, max_length=100)
-    # v DB INTEGER (0/1), v appce bool – v repository to převedeme na 0/1
     outdoor: bool
     status: str = Field(min_length=1, max_length=50)
     note: Optional[str] = None

@@ -50,6 +50,10 @@ class ReservationsService:
     ) -> Optional[Reservation]:
         return repo_update_reservation(self.conn, reservation_id, data)
 
+    def cancel_reservation(self, reservation_id: int) -> Optional[Reservation]:
+        upd = ReservationUpdate(state="CANCELLED")
+        return repo_update_reservation(self.conn, reservation_id, upd)
+
     def delete_reservation(self, reservation_id: int) -> bool:
         return repo_delete_reservation(self.conn, reservation_id)
 

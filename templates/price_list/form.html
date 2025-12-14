@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if mode == "edit" %}Admin | Upravit ceník{% else %}Admin | Nový ceník{% endif %}
+{% endblock %}
+{% block header %}
+  {% if mode == "edit" %}Upravit položku ceníku{% else %}Přidat položku ceníku{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">
+    {% if mode == "edit" %}Upravit položku ceníku{% else %}Přidat položku ceníku{% endif %}
+  </h1>
+  <p class="section__subtitle">
+    Nastav délku rezervace, časové okno a cenu. (Pro školní projekt klidně dej 07:00–22:00.)
+  </p>
+
+  {% if error %}
+    <div class="card" style="border-color:#fecaca;">
+      <div class="card__value" style="color:#991b1b;">Chyba</div>
+      <p class="card__text">{{ error }}</p>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <form method="post"
+          action="{% if mode == 'edit' %}/admin/price-list/{{ item.price_list_id }}/edit{% else %}/admin/price-list/new{% endif %}">
+
+      <div class="form__field">
+        <label class="form__label" for="duration_min">Délka (min)</label>
+        <select class="form__select" id="duration_min" name="duration_min" required>
+          {% set dur = item.duration_min if item else 60 %}
+          <option value="60"  {% if dur == 60 %}selected{% endif %}>60</option>
+          <option value="90"  {% if dur == 90 %}selected{% endif %}>90</option>
+          <option value="120" {% if dur == 120 %}selected{% endif %}>120</option>
+        </select>
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="opening_time">Platí od (HH:MM)</label>
+        <input class="form__input" id="opening_time" name="opening_time" required
+               placeholder="07:00"
+               value="{{ item.opening_time if item else '07:00' }}">
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="closing_time">Platí do (HH:MM)</label>
+        <input class="form__input" id="closing_time" name="closing_time" required
+               placeholder="22:00"
+               value="{{ item.closing_time if item else '22:00' }}">
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="base_price">Základní cena (Kč)</label>
+        <input class="form__input" id="base_price" name="base_price" type="number" step="0.01" required
+               value="{{ item.base_price if item else 200 }}">
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="indoor_multiplier">Indoor násobič</label>
+        <input class="form__input" id="indoor_multiplier" name="indoor_multiplier" type="number" step="0.01" required
+               value="{{ item.indoor_multiplier if item else 1.2 }}">
+        <small class="form__help">
+          Např. 1.2 znamená +20% pro indoor kurty. Outdoor se počítá bez násobiče.
+        </small>
+      </div>
+
+      <div class="hero__actions" style="margin-top: 1rem;">
+        <button class="btn btn--primary" type="submit">
+          {% if mode == "edit" %}Uložit{% else %}Vytvořit{% endif %}
+        </button>
+        <a class="btn btn--ghost" href="/admin/price-list">Zpět</a>
+      </div>
+
+    </form>
+  </div>
+</section>
+{% endblock %}

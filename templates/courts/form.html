@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if mode == "edit" %}Upravit kurt{% else %}Nový kurt{% endif %}
+{% endblock %}
+{% block header %}
+  {% if mode == "edit" %}Upravit kurt{% else %}Nový kurt{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">
+    {% if mode == "edit" %}Upravit kurt{% else %}Přidat kurt{% endif %}
+  </h1>
+
+  {% if error %}
+    <div class="card" style="border-color:#fecaca;">
+      <div class="card__value" style="color:#991b1b;">Chyba</div>
+      <p class="card__text">{{ error }}</p>
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <form method="post" action="{% if mode == 'edit' %}/courts/{{ court.courts_id }}/edit{% else %}/courts/new{% endif %}">
+      <div class="form__field">
+        <label class="form__label" for="court_name">Název kurtu</label>
+        <input class="form__input" id="court_name" name="court_name" required
+               value="{{ court.court_name if court else '' }}">
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="outdoor">Typ</label>
+        {% set is_outdoor = court.outdoor if court else false %}
+        <select class="form__select" id="outdoor" name="outdoor" required>
+          <option value="false" {% if not is_outdoor %}selected{% endif %}>Indoor</option>
+          <option value="true"  {% if is_outdoor %}selected{% endif %}>Outdoor</option>
+        </select>
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="status">Status</label>
+        <input class="form__input" id="status" name="status" required
+               value="{{ court.status if court else 'ACTIVE' }}">
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="note">Poznámka</label>
+        <input class="form__input" id="note" name="note"
+               value="{{ court.note if court and court.note else '' }}">
+      </div>
+
+      <div class="hero__actions" style="margin-top: 1rem;">
+        <button class="btn btn--primary" type="submit">
+          {% if mode == "edit" %}Uložit{% else %}Vytvořit{% endif %}
+        </button>
+        <a class="btn btn--ghost" href="/courts">Zpět</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

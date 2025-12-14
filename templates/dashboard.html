@@ -4,14 +4,20 @@
 
 {% block content %}
 
-{# Pomocná makra #}
+{# bezpečné defaulty #}
+{% set courts = courts|default([]) %}
+{% set my_reservations = my_reservations|default([]) %}
+{% set all_reservations = all_reservations|default([]) %}
+
+{# Pomocná makra (bez break) #}
 {% macro court_name(courts, court_id) -%}
-  {%- for c in courts %}
-    {%- if c.courts_id == court_id -%}
-      {{ c.court_name }}
-      {%- break -%}
+  {%- set ns = namespace(name="") -%}
+  {%- for c in courts -%}
+    {%- if ns.name == "" and c.courts_id == court_id -%}
+      {%- set ns.name = c.court_name -%}
     {%- endif -%}
   {%- endfor -%}
+  {{- ns.name -}}
 {%- endmacro %}
 
 <section class="section">

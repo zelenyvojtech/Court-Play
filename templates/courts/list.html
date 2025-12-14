@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Kurty{% endblock %}
+{% block header %}Kurty{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Kurty</h1>
+  <p class="section__subtitle">Přehled kurtů. Přidávání/upravy jen pro MANAGER/ADMIN.</p>
+
+  {% if user and user.role in ("MANAGER","ADMIN") %}
+    <div class="hero__actions" style="margin-bottom: 1rem;">
+      <a class="btn btn--primary" href="/courts/new">+ Přidat kurt</a>
+    </div>
+  {% endif %}
+
+  {% if courts|length == 0 %}
+    <div class="card">
+      <div class="card__value">Žádné kurty</div>
+      <p class="card__text">Přidej první kurt, aby šel používat kalendář rezervací.</p>
+    </div>
+  {% else %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Název</th>
+          <th>Typ</th>
+          <th>Status</th>
+          <th>Poznámka</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courts %}
+          <tr>
+            <td><a href="/courts/{{ c.courts_id }}"><strong>{{ c.court_name }}</strong></a></td>
+            <td>{% if c.outdoor %}Outdoor{% else %}Indoor{% endif %}</td>
+            <td>{{ c.status }}</td>
+            <td>{{ c.note or "—" }}</td>
+            <td style="white-space:nowrap;">
+              {% if user and user.role in ("MANAGER","ADMIN") %}
+                <a class="btn btn--ghost" href="/courts/{{ c.courts_id }}/edit">Upravit</a>
+              {% endif %}
+
+              {% if user and user.role == "ADMIN" %}
+                <form method="post" action="/courts/{{ c.courts_id }}/delete" style="display:inline;">
+                  <button class="btn btn--ghost" type="submit"
+                          onclick="return confirm('Opravdu chceš smazat tento kurt?');">
+                    Smazat
+                  </button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</section>
+{% endblock %}

@@ -7,7 +7,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     user_name: str = Field(min_length=1, max_length=100)
     role: str = Field(min_length=1, max_length=50)   # "PLAYER", "MANAGER", "ADMIN" ...
-    password: str = Field(min_length=8)              # zatím čisté heslo – později ho zahashujeme
+    password: str = Field(min_length=8)              # hash
 
 
 class UserUpdate(BaseModel):
@@ -23,7 +23,7 @@ class User(BaseModel):
     user_name: str
     role: str
     created_at: datetime
-    password: str  # v budoucnu hash
+    password: str  # hash
 
     class Config:
         from_attributes = True

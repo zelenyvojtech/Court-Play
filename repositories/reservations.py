@@ -94,6 +94,7 @@ def list_reservations_for_court_between(
         WHERE courts_id = ?
           AND start < ?
           AND end > ?
+          AND state != 'CANCELLED'
         ORDER BY start
         """,
         (court_id, end_str, start_str),
@@ -128,6 +129,7 @@ def list_future_reservations(
                courts_id
         FROM reservation
         WHERE start >= ?
+        AND state != 'CANCELLED'
         ORDER BY start
         """,
         (now_str,),

@@ -24,10 +24,17 @@
       <a href="{{ url_for('reservations_entry') }}" class="btn btn--primary">
         Rezervace kurtů
       </a>
-      {% if user %}
+
+      {% if user is defined and user %}
         <a href="{{ url_for('dashboard_ui') }}" class="btn btn--ghost">
           Moje zóna
         </a>
+
+        <form method="post" action="{{ url_for('logout') }}" style="display:inline;">
+          <button type="submit" class="btn btn--ghost">
+            Odhlásit
+          </button>
+        </form>
       {% else %}
         <a href="{{ url_for('login_form') }}" class="btn btn--ghost">
           Přihlásit

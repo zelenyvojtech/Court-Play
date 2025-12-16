@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Registrace – Court &amp; Play{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Registrace</h1>
+  <p class="section__subtitle">
+    Vytvořte si účet pro online rezervace tenisových kurtů.
+  </p>
+
+  {% if error %}
+    <p style="color:#b91c1c; margin-bottom:0.75rem;">
+      {{ error }}
+    </p>
+  {% endif %}
+
+  <form method="post" class="form">
+    <div class="form__field">
+      <label class="form__label" for="email">E-mail</label>
+      <input
+        class="form__input"
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+      >
+    </div>
+
+    <div class="form__field">
+      <label class="form__label" for="user_name">Jméno / přezdívka</label>
+      <input
+        class="form__input"
+        type="text"
+        id="user_name"
+        name="user_name"
+        required
+      >
+    </div>
+
+    <div class="form__field">
+      <label class="form__label" for="password">Heslo</label>
+      <input
+        class="form__input"
+        type="password"
+        id="password"
+        name="password"
+        required
+        minlength="8"
+        autocomplete="new-password"
+      >
+    </div>
+
+    <div class="form__field">
+      <label class="form__label" for="password_confirm">Potvrzení hesla</label>
+      <input
+        class="form__input"
+        type="password"
+        id="password_confirm"
+        name="password_confirm"
+        required
+        minlength="8"
+        autocomplete="new-password"
+      >
+    </div>
+
+    <div class="form__actions">
+      <button type="submit" class="btn btn--primary">
+        Vytvořit účet
+      </button>
+      <a href="/login" class="btn btn--ghost">
+        Už mám účet – přihlásit se
+      </a>
+    </div>
+  </form>
+</section>
+{% endblock %}

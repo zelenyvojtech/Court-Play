@@ -34,7 +34,7 @@ def courts_list_page(
 
 
 # GET /courts/{courts_id} – zobrazí detail konkrétního kurtu
-@router.get("/courts/{courts_id}", response_class=HTMLResponse)
+@router.get("/courts/{courts_id:int}", response_class=HTMLResponse)
 def court_detail_page(
     request: Request,
     courts_id: int = Path(...),
@@ -99,7 +99,7 @@ def court_new_submit(
 
 
 # GET /courts/{courts_id}/edit – formulář pro úpravu kurtu (jen pro MANAGER/ADMIN)
-@router.get("/courts/{courts_id}/edit", response_class=HTMLResponse)
+@router.get("/courts/{courts_id:int}/edit", response_class=HTMLResponse)
 def court_edit_form(
     request: Request,
     courts_id: int = Path(...),
@@ -123,7 +123,7 @@ def court_edit_form(
 
 
 # POST /courts/{courts_id}/edit – uloží změny kurtu
-@router.post("/courts/{courts_id}/edit")
+@router.post("/courts/{courts_id:int}/edit")
 def court_edit_submit(
     request: Request,
     courts_id: int = Path(...),
@@ -150,7 +150,7 @@ def court_edit_submit(
 
 
 # POST /courts/{courts_id}/delete – smaže kurt (povoleno jen ADMIN)
-@router.post("/courts/{courts_id}/delete")
+@router.post("/courts/{courts_id:int}/delete")
 def court_delete(
     courts_id: int = Path(...),
     current_user: AuthUser = Depends(require_admin),

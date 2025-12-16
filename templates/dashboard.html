@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}Moje zóna – Court &amp; Play{% endblock %}
+
+{% block content %}
+
+{# bezpečné defaulty #}
+{% set courts = courts|default([]) %}
+{% set my_reservations = my_reservations|default([]) %}
+{% set all_reservations = all_reservations|default([]) %}
+
+{# Pomocná makra (bez break) #}
+{% macro court_name(courts, court_id) -%}
+  {%- set ns = namespace(name="") -%}
+  {%- for c in courts -%}
+    {%- if ns.name == "" and c.courts_id == court_id -%}
+      {%- set ns.name = c.court_name -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {{- ns.name -}}
+{%- endmacro %}
+
+<section class="section">
+  <h1 class="section__title">Moje zóna</h1>
+  <p class="section__subtitle">
+    Vítejte, {{ user.user_name }}. Tady najdete přehled kurtů a vašich rezervací.
+  </p>
+
+  <!-- Přehledové cards -->
+  <div class="grid grid--3">
+    <div class="card">
+      <div class="card__label">Počet kurtů</div>
+      <div class="card__value">{{ courts|length }}</div>
+      <p class="card__text">
+        Přehled všech kurtů v areálu. Detailní správu kurtů najdete v&nbsp;admin sekci.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card__label">Moje rezervace</div>
+      <div class="card__value">{{ my_reservations|length }}</div>
+      <p class="card__text">
+        Historie i budoucí rezervace. Kompletní seznam najdete na stránce
+        <a href="{{ url_for('my_reservations_ui') }}">Moje rezervace</a>.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card__label">Role v systému</div>
+      <div class="card__value">
+        {% if user.role == "PLAYER" %}
+          Hráč
+        {% elif user.role == "MANAGER" %}
+          Správce areálu
+        {% elif user.role == "ADMIN" %}
+          Administrátor
+        {% else %}
+          {{ user.role }}
+        {% endif %}
+      </div>
+      <p class="card__text">
+        Profil a změnu hesla najdete v sekci
+        <a href="/profile">Můj profil</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Rychlé akce -->
+  <div class="section" style="margin-top:2rem;">
+    <h2 class="section__title" style="font-size:1.2rem;">Rychlé akce</h2>
+    <div class="hero__actions" style="margin-top:0.5rem;">
+      <a href="{{ url_for('reservations_calendar_ui') }}" class="btn btn--primary">
+        Rezervovat kurt
+      </a>
+      <a href="{{ url_for('my_reservations_ui') }}" class="btn btn--ghost">
+        Moje rezervace
+      </a>
+      <a href="/profile" class="btn btn--ghost">
+        Můj profil
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Moje nejbližší rezervace -->
+<section class="section">
+  <h2 class="section__title">Moje rezervace</h2>
+  <p class="section__subtitle">
+    Přehled vašich rezervací. Pro detailní správu přejděte na
+    <a href="{{ url_for('my_reservations_ui') }}">stránku Moje rezervace</a>.
+  </p>
+
+  {% if my_reservations %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Čas</th>
+          <th>Kurt</th>
+          <th>Stav</th>
+          <th>Cena</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in my_reservations[:5] %}
+          <tr>
+            <td>{{ r.start.strftime("%d.%m.%Y") }}</td>
+            <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
+            <td>{{ court_name(courts, r.courts_id) or ("Kurt #" ~ r.courts_id) }}</td>
+            <td>
+              {% if r.state == "CANCELLED" %}
+                Zrušeno
+              {% elif r.end <= now %}
+                Odehráno
+              {% else %}
+                Rezervováno
+              {% endif %}
+            </td>
+            <td>{{ "%.0f"|format(r.price_total) }} Kč</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="prose">
+      Zatím nemáte žádné rezervace. Začněte kliknutím na
+      <a href="{{ url_for('reservations_calendar_ui') }}">rezervační kalendář</a>.
+    </p>
+  {% endif %}
+</section>
+
+<!-- Admin / manager sekce -->
+{% if user.role in ("MANAGER", "ADMIN") %}
+<section class="section">
+  <h2 class="section__title">Správa areálu</h2>
+  <p class="section__subtitle">
+    Nástroje pro správu kurtů, ceníku, blokací a uživatelů.
+  </p>
+
+  <div class="grid grid--3">
+    <div class="card">
+      <div class="card__label">Kurty</div>
+      <div class="card__value">{{ courts|length }}</div>
+      <p class="card__text">
+        Přehled a správa všech kurtů v areálu.
+      </p>
+      <a href="/courts" class="btn btn--ghost" style="margin-top:0.5rem;">
+        Spravovat kurty
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card__label">Ceník</div>
+      <p class="card__text">
+        Nastavení cen podle délky rezervace a části dne.
+      </p>
+      <a href="/admin/price-list" class="btn btn--ghost" style="margin-top:0.5rem;">
+        Spravovat ceník
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card__label">Časové bloky</div>
+      <p class="card__text">
+        Blokace kurtů pro údržbu nebo turnaje.
+      </p>
+      <a href="/admin/time-blocks" class="btn btn--ghost" style="margin-top:0.5rem;">
+        Spravovat blokace
+      </a>
+    </div>
+
+    {% if user.role == "ADMIN" %}
+      <div class="card">
+        <div class="card__label">Uživatelé</div>
+        <p class="card__text">
+          Správa uživatelů a jejich rolí.
+        </p>
+        <a href="/admin/users" class="btn btn--ghost" style="margin-top:0.5rem;">
+          Spravovat uživatele
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if all_reservations %}
+<section class="section">
+  <h2 class="section__title">Budoucí rezervace v areálu</h2>
+  <p class="section__subtitle">
+    Přehled nejbližších rezervací na všech kurtech.
+  </p>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Čas</th>
+        <th>Kurt</th>
+        <th>Uživatel</th>
+        <th>Stav</th>
+        <th>Akce</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in all_reservations[:10] %}
+        <tr>
+          <td>{{ r.start.strftime("%d.%m.%Y") }}</td>
+          <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
+          <td>{{ court_name(courts, r.courts_id) or ("Kurt #" ~ r.courts_id) }}</td>
+          <td>#{{ r.user_id }}</td>
+          <td>
+            {% if r.state == "CANCELLED" %}
+              Zrušeno
+            {% elif r.end <= now %}
+              Odehráno
+            {% else %}
+              Rezervováno
+            {% endif %}
+          </td>
+          <td>
+            {% if r.state != "CANCELLED" and r.start > now %}
+              <form method="post"
+                    action="{{ request.url_for('reservation_admin_cancel', reservation_id=r.reservation_id) }}"
+                    style="margin:0;">
+                <button type="submit" class="btn btn--ghost">Stornovat</button>
+              </form>
+            {% else %}
+              –
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+{% endif %}
+
+{% endblock %}

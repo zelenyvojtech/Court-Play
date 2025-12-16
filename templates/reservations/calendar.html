@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Rezervace | Kalendář{% endblock %}
+{% block header %}Rezervace{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/reservations_calendar.css') }}">
+<script defer src="{{ url_for('static', path='js/reservations_calendar.js') }}"></script>
+
+{% set courts = courts|default([]) %}
+{% set time_slots = time_slots|default([]) %}
+{% set selected_date = selected_date|default("") %}
+{% set duration = duration|default(60) %}
+{% set environment = environment|default("all") %}
+{% set slot_minutes = slot_minutes|default(30) %}
+{% set grid = grid|default({}) %}
+{% set flash_ok = flash_ok|default("") %}
+{% set flash_error = flash_error|default("") %}
+
+<section class="resv-page" data-slot-minutes="{{ slot_minutes }}">
+  <header class="resv-top">
+    <div>
+      <div class="resv-kicker">CourtMate</div>
+      <h2 class="resv-title">Kalendář kurtů</h2>
+      <p class="resv-sub">Vyber volné bloky (po 30 min) a rezervuj jedním klikem.</p>
+
+      <div class="resv-legend" aria-label="Legenda">
+        <span class="legend-item"><i class="dot dot-free"></i> Volno</span>
+        <span class="legend-item"><i class="dot dot-selected"></i> Vybráno</span>
+        <span class="legend-item"><i class="dot dot-busy"></i> Obsazeno</span>
+        <span class="legend-item"><i class="dot dot-blocked"></i> Blokace</span>
+      </div>
+    </div>
+
+    <form id="filtersForm" method="get" class="resv-filters">
+      <div class="pill">
+        <label for="date">Datum</label>
+        <input id="date" name="date" type="date" value="{{ selected_date }}">
+      </div>
+
+      <div class="pill">
+        <label for="duration">Délka</label>
+        <select id="duration" name="duration">
+          <option value="30"  {% if duration|string == "30" %}selected{% endif %}>30 min</option>
+          <option value="60"  {% if duration|string == "60" %}selected{% endif %}>60 min</option>
+          <option value="90"  {% if duration|string == "90" %}selected{% endif %}>90 min</option>
+          <option value="120" {% if duration|string == "120" %}selected{% endif %}>120 min</option>
+        </select>
+      </div>
+
+      <div class="pill">
+        <label for="env">Prostředí</label>
+        <select id="env" name="env">
+          <option value="all"     {% if environment == "all" %}selected{% endif %}>Vše</option>
+          <option value="indoor"  {% if environment == "indoor" %}selected{% endif %}>Indoor</option>
+          <option value="outdoor" {% if environment == "outdoor" %}selected{% endif %}>Outdoor</option>
+        </select>
+      </div>
+
+      <div class="navbtns">
+        <button type="button" class="btn-ghost" data-nav="prev" title="Předchozí den">◀</button>
+        <button type="button" class="btn-ghost" data-nav="today" title="Dnes">Dnes</button>
+        <button type="button" class="btn-ghost" data-nav="next" title="Další den">▶</button>
+      </div>
+    </form>
+  </header>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  {% if flash_error %}
+    <div class="hint"><strong>Chyba:</strong> {{ flash_error }}</div>
+  {% elif flash_ok %}
+    <div class="hint"><strong>OK:</strong> {{ flash_ok }}</div>
+  {% endif %}
+
+  <div class="resv-card">
+    {% if courts|length == 0 %}
+      <div class="hint">
+        <strong>Nejsou načtené kurty.</strong>
+        Přidej je přes stránku <code>/courts/new</code> (MANAGER/ADMIN).
+      </div>
+    {% elif time_slots|length == 0 %}
+      <div class="hint">
+        <strong>Chybí <code>time_slots</code>.</strong>
+      </div>
+    {% else %}
+      <div class="cal-scroll" aria-label="Kalendář">
+        <div class="cal-grid" style="grid-template-columns: 92px repeat({{ courts|length }}, minmax(160px, 1fr));">
+          <div class="cell head corner">Čas</div>
+
+          {% for court in courts %}
+            {% set env_label = "Outdoor" if court.outdoor else "Indoor" %}
+            <div class="cell head">
+              <div class="court-head">
+                <div class="court-name">{{ court.court_name }}</div>
+                <div class="court-meta">{{ env_label }}</div>
+              </div>
+            </div>
+          {% endfor %}
+
+          {% for slot in time_slots %}
+            {% set time_index = loop.index0 %}
+            {% set slot_label = slot %}
+            {% set slot_value = slot %}
+
+            <div class="cell time">{{ slot_label }}</div>
+
+            {% for court in courts %}
+              {% set court_key = court.courts_id|string %}
+              {% set court_grid = grid.get(court_key, {}) %}
+              {% set celldata = court_grid.get(slot_value|string) %}
+
+              {% set status =
+                 (celldata.status if celldata is not none and celldata.status is defined else "free")
+              %}
+              {% set label =
+                 (celldata.label if celldata is not none and celldata.label is defined else "")
+              %}
+
+              {% set is_busy = status in ["busy","mine"] %}
+              {% set is_blocked = status in ["blocked"] %}
+              {% set is_past = status in ["past"] %}
+              {% set disabled = is_busy or is_blocked or is_past %}
+
+              <div class="cell">
+                <button
+                  type="button"
+                  class="slot js-slot {% if is_busy %}is-busy{% endif %} {% if is_blocked %}is-blocked{% endif %}"
+                  {% if disabled %}disabled aria-disabled="true"{% endif %}
+                  data-court-id="{{ court_key }}"
+                  data-court-name="{{ court.court_name }}"
+                  data-start="{{ slot_value }}"
+                  data-time-index="{{ time_index }}"
+                  title="{{ label if label else 'Klikni pro výběr' }}"
+                  aria-pressed="false"
+                >
+                  {% if label %}
+                    <span class="slot-label">{{ label }}</span>
+                  {% else %}
+                    <span class="slot-plus">+</span>
+                  {% endif %}
+                </button>
+              </div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <form id="reserveForm" method="post" action="{{ request.url.path }}" class="reserve-bar">
+    <div class="reserve-left">
+      <div class="reserve-title" id="selTitle">Vybráno: 0 slotů</div>
+      <div class="reserve-sub" id="selHint">Klikni na volné bloky. Délka je podle filtru nahoře.</div>
+      <div class="chips" id="selectedList" aria-label="Vybrané sloty"></div>
+    </div>
+
+    <div class="reserve-right">
+      <input type="hidden" name="selected_slots" id="selectedSlotsInput" value="[]">
+      <input type="hidden" name="date" id="reserveDate" value="{{ selected_date }}">
+      <input type="hidden" name="duration" id="reserveDuration" value="{{ duration }}">
+      <input type="hidden" name="env" id="reserveEnv" value="{{ environment }}">
+
+      <button type="submit" class="btn-primary" id="reserveBtn" disabled>Rezervovat vybrané</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

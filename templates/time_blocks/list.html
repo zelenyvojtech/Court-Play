@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Admin | Blokace{% endblock %}
+{% block header %}Blokace{% endblock %}
+
+{% block content %}
+{% set blocks = blocks|default([]) %}
+{% set courts = courts|default([]) %}
+
+{# mapa courts_id -> court_name #}
+{% set cmap = namespace(m={}) %}
+{% for c in courts %}
+  {% set _ = cmap.m.update({(c.courts_id|string): c.court_name}) %}
+{% endfor %}
+
+<section class="section">
+  <h1 class="section__title">Blokace kurtů</h1>
+  <p class="section__subtitle">Promítá se do kalendáře jako „Blokace“ (sloty nejdou vybrat).</p>
+
+  <div class="hero__actions" style="margin-bottom:1rem;">
+    <a class="btn btn--primary" href="/admin/time-blocks/new">+ Přidat blokaci</a>
+  </div>
+
+  {% if blocks|length == 0 %}
+    <div class="card">
+      <div class="card__value">Žádné blokace</div>
+      <p class="card__text">Zatím nejsou žádné blokace.</p>
+    </div>
+  {% else %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Kurt</th>
+          <th>Začátek</th>
+          <th>Konec</th>
+          <th>Délka</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in blocks %}
+          {% set dur = 0 %}
+          {% if b.start and b.end %}
+            {% set dur = ((b.end - b.start).total_seconds() // 60) | int %}
+          {% endif %}
+          <tr>
+            <td>{{ b.time_block_id }}</td>
+            <td>{{ cmap.m.get(b.courts_id|string) or ("Kurt #" ~ b.courts_id) }}</td>
+            <td>{{ b.start.strftime("%d.%m.%Y %H:%M") if b.start else b.start }}</td>
+            <td>{{ b.end.strftime("%d.%m.%Y %H:%M") if b.end else b.end }}</td>
+            <td>{{ dur }} min</td>
+            <td style="white-space:nowrap;">
+              <a class="btn btn--ghost" href="/admin/time-blocks/{{ b.time_block_id }}/edit">Upravit</a>
+              <form method="post" action="/admin/time-blocks/{{ b.time_block_id }}/delete" style="display:inline;">
+                <button class="btn btn--ghost" type="submit"
+                        onclick="return confirm('Opravdu smazat blokaci?');">Smazat</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</section>
+{% endblock %}

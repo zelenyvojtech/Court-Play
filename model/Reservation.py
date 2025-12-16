@@ -4,7 +4,6 @@ from typing import Literal, Optional
 
 
 ReservationState = Literal["PENDING", "CONFIRMED", "CANCELLED", "FINISHED"]
-# v DB je TEXT, takže tyhle hodnoty budeme jako čisté stringy ukládat do sloupce state
 
 
 class ReservationCreate(BaseModel):
@@ -24,7 +23,6 @@ class ReservationUpdate(BaseModel):
     courts_id: Optional[int] = None
     state: Optional[ReservationState] = None
     price_total: Optional[float] = Field(default=None, gt=0)
-    # price_total budeme typicky přpočítávat – ale když bude potřeba, umíme ho i přepsat ručně
 
 
 class Reservation(ReservationCreate):

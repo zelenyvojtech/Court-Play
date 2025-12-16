@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Admin | Ceník{% endblock %}
+{% block header %}Ceník{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Správa ceníku</h1>
+  <p class="section__subtitle">
+    Nastav ceny podle délky rezervace a času. Přístup mají MANAGER/ADMIN, mazání jen ADMIN.
+  </p>
+
+  <div class="hero__actions" style="margin-bottom: 1rem;">
+    <a class="btn btn--primary" href="/admin/price-list/new">+ Přidat položku</a>
+  </div>
+
+  {% if items|length == 0 %}
+    <div class="card">
+      <div class="card__value">Ceník je prázdný</div>
+      <p class="card__text">
+        Přidej minimálně položky pro 60 / 90 / 120 minut, jinak nepůjdou vytvářet rezervace (výpočet ceny).
+      </p>
+    </div>
+  {% else %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Délka</th>
+          <th>Platí od–do</th>
+          <th>Základní cena</th>
+          <th>Indoor násobič</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for it in items %}
+          <tr>
+            <td>{{ it.price_list_id }}</td>
+            <td><strong>{{ it.duration_min }} min</strong></td>
+            <td>{{ it.opening_time }} – {{ it.closing_time }}</td>
+            <td>{{ "%.0f"|format(it.base_price) }} Kč</td>
+            <td>{{ it.indoor_multiplier }}</td>
+            <td style="white-space:nowrap;">
+              <a class="btn btn--ghost" href="/admin/price-list/{{ it.price_list_id }}/edit">Upravit</a>
+
+              {% if user and user.role == "ADMIN" %}
+                <form method="post" action="/admin/price-list/{{ it.price_list_id }}/delete" style="display:inline;">
+                  <button class="btn btn--ghost" type="submit"
+                          onclick="return confirm('Opravdu chceš smazat tuto položku ceníku?');">
+                    Smazat
+                  </button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="card" style="margin-top: 1rem;">
+      <div class="card__label">Tip</div>
+      <p class="card__text">
+        Doporučení pro MVP: vytvoř 3 položky (60/90/120 min) s časem 07:00–22:00.
+        <br>
+        <strong>Indoor násobič</strong> se použije pro indoor kurty, outdoor bere cenu bez násobiče.
+      </p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Moje rezervace – Court &amp; Play{% endblock %}
+
+{% block content %}
+<section class="section">
+  <h1 class="section__title">Moje rezervace</h1>
+  <p class="section__subtitle">
+    Přehled všech vašich rezervací. Budoucí rezervace můžete stornovat.
+  </p>
+
+  {% if reservations %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Čas</th>
+          <th>Kurt</th>
+          <th>Stav</th>
+          <th>Cena</th>
+          <th>Akce</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reservations %}
+          <tr>
+            <td>{{ r.start.strftime("%d.%m.%Y") }}</td>
+            <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
+            <td>Kurt #{{ r.courts_id }}</td>
+            <td>
+              {% if r.state == "CANCELLED" %}
+                Zrušeno
+                {% elif r.end <= now %}
+                  Odehráno
+                {% else %}
+                  Rezervováno
+                {% endif %}
+
+            </td>
+            <td>
+              {% if r.price_total is not none %}
+                {{ "%.0f"|format(r.price_total) }} Kč
+              {% else %}
+                –
+              {% endif %}
+            </td>
+            <td>
+              {% if r.state != "CANCELLED" and r.start > now %}
+                <form method="post" action="{{ request.url_for('my_reservation_cancel', reservation_id=r.reservation_id) }}" style="margin:0;">
+                  <button type="submit" class="btn btn--ghost">Stornovat</button>
+                </form>
+              {% else %}
+                –
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="prose">
+      Zatím nemáte žádné rezervace. Přidat novou můžete přes
+      <a href="{{ url_for('reservations_calendar_ui') }}">rezervační kalendář</a>.
+    </p>
+  {% endif %}
+
+  <div class="form__actions" style="margin-top:1rem;">
+    <a href="{{ url_for('reservations_calendar_ui') }}" class="btn btn--primary">
+      Nová rezervace
+    </a>
+    <a href="/app/dashboard" class="btn btn--ghost">
+      Zpět na přehled
+    </a>
+  </div>
+</section>
+{% endblock %}

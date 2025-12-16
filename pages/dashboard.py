@@ -1,6 +1,7 @@
 # app/pages/dashboard.py
 from fastapi import APIRouter, Depends, Request
 from fastapi.templating import Jinja2Templates
+from datetime import datetime
 
 from dependencies import require_user, get_courts_service, get_reservations_service
 from services.auth import AuthUser
@@ -18,21 +19,24 @@ async def dashboard_ui(
     courts_service: CourtsService = Depends(get_courts_service),
     reservations_service: ReservationsService = Depends(get_reservations_service),
 ):
-    courts = courts_service.get_all()
-    my_reservations = reservations_service.get_for_user(current_user.id)
+    courts = list(courts_service.list_courts() or [])
+
+    my_reservations = reservations_service.list_reservations_for_user(current_user.user_id)
+
     all_reservations = (
-        reservations_service.get_all()
+        reservations_service.list_future_reservations()
         if current_user.role in ("MANAGER", "ADMIN")
         else []
     )
 
     return templates.TemplateResponse(
-        "dashboard/index.html",
+        "dashboard.html",
         {
             "request": request,
             "user": current_user,
             "courts": courts,
             "my_reservations": my_reservations,
             "all_reservations": all_reservations,
+            "now": datetime.now(),
         },
     )

@@ -3,7 +3,9 @@ import sqlite3
 from datetime import datetime
 from typing import List, Optional
 
+from model.TimeBlock import TimeBlock
 from model.Reservation import Reservation, ReservationCreate, ReservationUpdate
+
 from repositories.reservations import (
     list_reservations as repo_list_reservations,
     list_reservations_for_user as repo_list_reservations_for_user,
@@ -19,7 +21,6 @@ from repositories.time_block import (
 )
 from repositories.price_list import get_price_list as repo_get_price_list
 from repositories.courts import get_court as repo_get_court
-
 
 class ReservationsService:
     def __init__(self, conn: sqlite3.Connection):
@@ -48,6 +49,10 @@ class ReservationsService:
         data: ReservationUpdate,
     ) -> Optional[Reservation]:
         return repo_update_reservation(self.conn, reservation_id, data)
+
+    def cancel_reservation(self, reservation_id: int) -> Optional[Reservation]:
+        upd = ReservationUpdate(state="CANCELLED")
+        return repo_update_reservation(self.conn, reservation_id, upd)
 
     def delete_reservation(self, reservation_id: int) -> bool:
         return repo_delete_reservation(self.conn, reservation_id)
@@ -120,11 +125,19 @@ class ReservationsService:
         2. Spočítá cenu podle ceníku a typu kurtu.
         3. Zavolá repository.create_reservation a vrátí výslednou rezervaci.
         """
-        # 1) kolize
+
         self._ensure_slot_is_free(data.courts_id, data.start, data.end)
 
-        # 2) cena
         price_total = self._compute_price(data)
 
-        # 3) uložíme do DB
         return repo_create_reservation(self.conn, data, price_total)
+
+    def list_reservations_for_court_between(
+        self, court_id: int, start: datetime, end: datetime
+    ) -> List[Reservation]:
+        return repo_list_reservations_for_court_between(self.conn, court_id, start, end)
+
+    def list_time_blocks_for_court_between(
+        self, court_id: int, start: datetime, end: datetime
+    ) -> List[TimeBlock]:
+        return repo_list_time_blocks_for_court_between(self.conn, court_id, start, end)

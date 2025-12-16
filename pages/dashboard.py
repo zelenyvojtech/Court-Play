@@ -1,6 +1,7 @@
 # app/pages/dashboard.py
 from fastapi import APIRouter, Depends, Request
 from fastapi.templating import Jinja2Templates
+from datetime import datetime
 
 from dependencies import require_user, get_courts_service, get_reservations_service
 from services.auth import AuthUser
@@ -36,5 +37,6 @@ async def dashboard_ui(
             "courts": courts,
             "my_reservations": my_reservations,
             "all_reservations": all_reservations,
+            "now": datetime.now(),
         },
     )

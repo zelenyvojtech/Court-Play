@@ -129,7 +129,7 @@ def list_future_reservations(
                courts_id
         FROM reservation
         WHERE start >= ?
-          AND state != 'CANCELLED'
+        AND state != 'CANCELLED'
         ORDER BY start
         """,
         (now_str,),

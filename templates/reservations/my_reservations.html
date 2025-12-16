@@ -28,15 +28,14 @@
             <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
             <td>Kurt #{{ r.courts_id }}</td>
             <td>
-              {% if r.state == "CONFIRMED" %}
-                Rezervováno
-              {% elif r.state == "CANCELLED" %}
+              {% if r.state == "CANCELLED" %}
                 Zrušeno
-              {% elif r.state == "FINISHED" %}
-                Odehráno
-              {% else %}
-                {{ r.state }}
-              {% endif %}
+                {% elif r.end <= now %}
+                  Odehráno
+                {% else %}
+                  Rezervováno
+                {% endif %}
+
             </td>
             <td>
               {% if r.price_total is not none %}
@@ -46,7 +45,7 @@
               {% endif %}
             </td>
             <td>
-              {% if r.state in ("PENDING", "CONFIRMED") %}
+              {% if r.state != "CANCELLED" and r.start > now %}
                 <form method="post" action="{{ request.url_for('my_reservation_cancel', reservation_id=r.reservation_id) }}" style="margin:0;">
                   <button type="submit" class="btn btn--ghost">Stornovat</button>
                 </form>
@@ -61,12 +60,12 @@
   {% else %}
     <p class="prose">
       Zatím nemáte žádné rezervace. Přidat novou můžete přes
-      <a href="/reservations/new">formulář nové rezervace</a>.
+      <a href="{{ url_for('reservations_calendar_ui') }}">rezervační kalendář</a>.
     </p>
   {% endif %}
 
   <div class="form__actions" style="margin-top:1rem;">
-    <a href="/reservations/new" class="btn btn--primary">
+    <a href="{{ url_for('reservations_calendar_ui') }}" class="btn btn--primary">
       Nová rezervace
     </a>
     <a href="/app/dashboard" class="btn btn--ghost">

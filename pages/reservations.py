@@ -54,7 +54,6 @@ async def reservations_calendar_ui(
 ):
     q = request.query_params
 
-    # flash zprávy po redirectu
     flash_ok = q.get("ok")
     flash_error = q.get("error")
 
@@ -65,7 +64,7 @@ async def reservations_calendar_ui(
         day = date.today()
     selected_date = day.isoformat()
 
-    # délka (povolíme i 30)
+    # délka
     try:
         duration = int(q.get("duration") or 60)
     except ValueError:
@@ -73,7 +72,7 @@ async def reservations_calendar_ui(
     if duration not in (30, 60, 90, 120):
         duration = 60
 
-    # filtr indoor/outdoor
+    # env
     environment = (q.get("env") or "all").lower()
     if environment not in ("all", "indoor", "outdoor"):
         environment = "all"
@@ -84,7 +83,6 @@ async def reservations_calendar_ui(
     elif environment == "outdoor":
         courts = [c for c in courts if getattr(c, "outdoor", False)]
 
-    # časová osa po 30 minutách
     slot_minutes = 30
     opening = datetime.combine(day, time(7, 0))
     closing = datetime.combine(day, time(22, 0))
@@ -108,6 +106,19 @@ async def reservations_calendar_ui(
             return rd
         return rd + timedelta(minutes=slot_minutes)
 
+    # ---- NOVÉ: vypočti minulé sloty pro daný den ----
+    now = datetime.now()
+    past_slots: set[str] = set()
+
+    if day < now.date():
+        past_slots = set(time_slots)  # celý den je minulost
+    elif day == now.date():
+        for hhmm in time_slots:
+            hh, mm = map(int, hhmm.split(":"))
+            slot_dt = datetime.combine(day, time(hh, mm))
+            if slot_dt <= now:
+                past_slots.add(hhmm)
+
     # grid[courts_id_str][HH:MM] = {status,label}
     grid = {str(c.courts_id): {} for c in courts}
 
@@ -115,7 +126,11 @@ async def reservations_calendar_ui(
         cid = c.courts_id
         cid_s = str(cid)
 
-        # blokace (time_blocks)
+        # ---- NOVÉ: předvyplň minulost (jen aby volné minulé nebyly klikatelné) ----
+        for hhmm in past_slots:
+            grid[cid_s][hhmm] = {"status": "past", "label": "Proběhlo"}
+
+        # blokace
         blocks = reservations_service.list_time_blocks_for_court_between(cid, opening, closing)
         for b in blocks:
             b_start = round_down(b.start)
@@ -130,9 +145,6 @@ async def reservations_calendar_ui(
         # rezervace
         res = reservations_service.list_reservations_for_court_between(cid, opening, closing)
         for r in res:
-            if getattr(r, "state", None) == "CANCELLED":
-                continue
-
             r_start = round_down(r.start)
             r_end = round_up(r.end)
             r_user_id = getattr(r, "user_id", None)
@@ -186,6 +198,10 @@ async def reservations_calendar_submit(
     if duration not in (30, 60, 90, 120):
         duration = 60
 
+    environment = (environment or "all").lower()
+    if environment not in ("all", "indoor", "outdoor"):
+        environment = "all"
+
     try:
         slots = json.loads(selected_slots)
         if not isinstance(slots, list):
@@ -206,6 +222,7 @@ async def reservations_calendar_submit(
         )
 
     created_ids: list[int] = []
+    now = datetime.now()  # ---- NOVÉ: backend kontrola do minulosti ----
 
     try:
         for s in slots:
@@ -220,13 +237,15 @@ async def reservations_calendar_submit(
             except Exception:
                 raise ValueError(f"Neplatný čas: {start_hhmm}")
 
+            # ---- NOVÉ: zákaz rezervace do minulosti ----
+            if start_dt <= now:
+                raise ValueError(f"Termín {day.isoformat()} {start_hhmm} už proběhl.")
+
             end_dt = start_dt + timedelta(minutes=dur)
 
             price_list_id = _pick_price_list_id(price_list_service, dur, start_dt, end_dt)
             if price_list_id is None:
-                raise ValueError(
-                    f"Chybí položka ceníku pro {dur} min v čase {start_hhmm}."
-                )
+                raise ValueError(f"Chybí položka ceníku pro {dur} min v čase {start_hhmm}.")
 
             data = ReservationCreate(
                 user_id=current_user.user_id,
@@ -241,14 +260,15 @@ async def reservations_calendar_submit(
             created_ids.append(created.reservation_id)
 
     except Exception as e:
+        # rollback
         for rid in created_ids:
             try:
-                reservations_service.delete_reservation(rid)
+                reservations_service.cancel_reservation(rid)
             except Exception:
                 pass
 
         return RedirectResponse(
-            url=base_url + "&error=" + quote(str(e)),
+            url=str(base.include_query_params(error=str(e))),
             status_code=status.HTTP_303_SEE_OTHER,
         )
 
@@ -313,3 +333,39 @@ async def cancel_my_reservation(
         url=str(request.url_for("my_reservations_ui").include_query_params(ok="Rezervace stornována.")),
         status_code=status.HTTP_303_SEE_OTHER,
     )
+
+@router.post("/sprava/{reservation_id}/cancel", name="reservation_admin_cancel")
+async def reservation_admin_cancel(
+    request: Request,
+    reservation_id: int,
+    current_user: AuthUser = Depends(require_user),
+    reservations_service: ReservationsService = Depends(get_reservations_service),
+):
+    if current_user.role not in ("MANAGER", "ADMIN"):
+        raise HTTPException(status_code=403)
+
+    r = reservations_service.get_reservation(reservation_id)
+    if r is None:
+        raise HTTPException(status_code=404)
+
+    now = datetime.now()
+
+    if getattr(r, "state", None) == "CANCELLED":
+        return RedirectResponse(
+            url=str(request.url_for("dashboard_ui").include_query_params(ok="Rezervace už je zrušená.")),
+            status_code=status.HTTP_303_SEE_OTHER,
+        )
+
+    if r.start <= now:
+        return RedirectResponse(
+            url=str(request.url_for("dashboard_ui").include_query_params(error="Minulou rezervaci už nelze stornovat.")),
+            status_code=status.HTTP_303_SEE_OTHER,
+        )
+
+    reservations_service.cancel_reservation(reservation_id)
+
+    return RedirectResponse(
+        url=str(request.url_for("dashboard_ui").include_query_params(ok="Rezervace stornována.")),
+        status_code=status.HTTP_303_SEE_OTHER,
+    )
+

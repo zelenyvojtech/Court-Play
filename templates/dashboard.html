@@ -108,16 +108,12 @@
             <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
             <td>{{ court_name(courts, r.courts_id) or ("Kurt #" ~ r.courts_id) }}</td>
             <td>
-              {% if r.state == "PENDING" %}
-                Čeká na potvrzení
-              {% elif r.state == "CONFIRMED" %}
-                Potvrzeno
-              {% elif r.state == "CANCELLED" %}
+              {% if r.state == "CANCELLED" %}
                 Zrušeno
-              {% elif r.state == "FINISHED" %}
+              {% elif r.end <= now %}
                 Odehráno
               {% else %}
-                {{ r.state }}
+                Rezervováno
               {% endif %}
             </td>
             <td>{{ "%.0f"|format(r.price_total) }} Kč</td>
@@ -202,6 +198,7 @@
         <th>Kurt</th>
         <th>Uživatel</th>
         <th>Stav</th>
+        <th>Akce</th>
       </tr>
     </thead>
     <tbody>
@@ -212,16 +209,23 @@
           <td>{{ court_name(courts, r.courts_id) or ("Kurt #" ~ r.courts_id) }}</td>
           <td>#{{ r.user_id }}</td>
           <td>
-            {% if r.state == "PENDING" %}
-              Čeká na potvrzení
-            {% elif r.state == "CONFIRMED" %}
-              Potvrzeno
-            {% elif r.state == "CANCELLED" %}
+            {% if r.state == "CANCELLED" %}
               Zrušeno
-            {% elif r.state == "FINISHED" %}
+            {% elif r.end <= now %}
               Odehráno
             {% else %}
-              {{ r.state }}
+              Rezervováno
+            {% endif %}
+          </td>
+          <td>
+            {% if r.state != "CANCELLED" and r.start > now %}
+              <form method="post"
+                    action="{{ request.url_for('reservation_admin_cancel', reservation_id=r.reservation_id) }}"
+                    style="margin:0;">
+                <button type="submit" class="btn btn--ghost">Stornovat</button>
+              </form>
+            {% else %}
+              –
             {% endif %}
           </td>
         </tr>

@@ -119,7 +119,8 @@
 
               {% set is_busy = status in ["busy","mine"] %}
               {% set is_blocked = status in ["blocked"] %}
-              {% set disabled = is_busy or is_blocked %}
+              {% set is_past = status in ["past"] %}
+              {% set disabled = is_busy or is_blocked or is_past %}
 
               <div class="cell">
                 <button

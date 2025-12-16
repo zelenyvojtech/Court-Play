@@ -5,33 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f724287-b3cb-4e0c-92d9-820266b72daf" name="Changes" comment="dsa">
-      <change afterPath="$PROJECT_DIR$/templates/courts/detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/courts/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/courts/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/price_list/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/price_list/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/time_blocks/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/time_blocks/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/users/list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/database.db-shm" beforeDir="false" afterPath="$PROJECT_DIR$/database/database.db-shm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/database.db-wal" beforeDir="false" afterPath="$PROJECT_DIR$/database/database.db-wal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/Court.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/Court.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/Reservation.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/Reservation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/User.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/courts.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/courts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/database.db-shm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/database.db-wal" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/dashboard.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/reservations.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/reservations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/time_blocks.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/time_blocks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/users.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repositories/reservations.py" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/reservations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/reservations.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/reservations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/reservations/calendar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/reservations/calendar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/reservations/my_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/reservations/my_reservations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reservations/detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reservations/form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/reservations/my_reservations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/reservations/my_reservations.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +147,9 @@
       <workItem from="1765486853340" duration="88000" />
       <workItem from="1765487013627" duration="1792000" />
       <workItem from="1765568942042" duration="10033000" />
-      <workItem from="1765658409460" duration="15844000" />
+      <workItem from="1765658409460" duration="15871000" />
+      <workItem from="1765704088230" duration="5864000" />
+      <workItem from="1765738571116" duration="1087000" />
     </task>
     <task id="LOCAL-00001" summary="Pages and templates, static">
       <option name="closed" value="true" />

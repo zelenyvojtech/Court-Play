@@ -6,7 +6,7 @@ from typing import Optional
 class UserCreate(BaseModel):
     email: EmailStr
     user_name: str = Field(min_length=1, max_length=100)
-    role: str = Field(min_length=1, max_length=50)   # "PLAYER", "MANAGER", "ADMIN" ...
+    role: str = Field(min_length=1, max_length=50)   # "PLAYER", "MANAGER", "ADMIN"
     password: str = Field(min_length=8)              # hash
 
 

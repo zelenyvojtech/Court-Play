@@ -102,7 +102,7 @@ def create_time_block(conn: sqlite3.Connection, data: TimeBlockCreate) -> TimeBl
     )
     conn.commit()
     new_id = cur.lastrowid
-    return get_time_block(conn, new_id)  # type: ignore[return-value]
+    return get_time_block(conn, new_id)
 
 
 def update_time_block(

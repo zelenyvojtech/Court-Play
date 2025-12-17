@@ -106,12 +106,11 @@ async def reservations_calendar_ui(
             return rd
         return rd + timedelta(minutes=slot_minutes)
 
-    # ---- NOVÉ: vypočti minulé sloty pro daný den ----
     now = datetime.now()
     past_slots: set[str] = set()
 
     if day < now.date():
-        past_slots = set(time_slots)  # celý den je minulost
+        past_slots = set(time_slots)
     elif day == now.date():
         for hhmm in time_slots:
             hh, mm = map(int, hhmm.split(":"))
@@ -119,18 +118,15 @@ async def reservations_calendar_ui(
             if slot_dt <= now:
                 past_slots.add(hhmm)
 
-    # grid[courts_id_str][HH:MM] = {status,label}
     grid = {str(c.courts_id): {} for c in courts}
 
     for c in courts:
         cid = c.courts_id
         cid_s = str(cid)
 
-        # ---- NOVÉ: předvyplň minulost (jen aby volné minulé nebyly klikatelné) ----
         for hhmm in past_slots:
             grid[cid_s][hhmm] = {"status": "past", "label": "Proběhlo"}
 
-        # blokace
         blocks = reservations_service.list_time_blocks_for_court_between(cid, opening, closing)
         for b in blocks:
             b_start = round_down(b.start)
@@ -189,7 +185,7 @@ async def reservations_calendar_submit(
     duration: int = Form(60),
     environment: str = Form("all", alias="env"),
 ):
-    # aby se po redirectu zachovaly filtry
+    # zachování filtrů po redirectu
     try:
         day = date.fromisoformat(selected_date)
     except ValueError:
@@ -222,7 +218,7 @@ async def reservations_calendar_submit(
         )
 
     created_ids: list[int] = []
-    now = datetime.now()  # ---- NOVÉ: backend kontrola do minulosti ----
+    now = datetime.now()  #kontrola minulosti
 
     try:
         for s in slots:
@@ -237,7 +233,7 @@ async def reservations_calendar_submit(
             except Exception:
                 raise ValueError(f"Neplatný čas: {start_hhmm}")
 
-            # ---- NOVÉ: zákaz rezervace do minulosti ----
+            # zákaz rezervace do minulosti
             if start_dt <= now:
                 raise ValueError(f"Termín {day.isoformat()} {start_hhmm} už proběhl.")
 

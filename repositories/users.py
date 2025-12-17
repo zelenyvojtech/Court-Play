@@ -110,7 +110,7 @@ def create_user(
     )
     conn.commit()
     new_id = cur.lastrowid
-    return get_user(conn, new_id)  # type: ignore[return-value]
+    return get_user(conn, new_id)
 
 
 def update_user(

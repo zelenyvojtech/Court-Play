@@ -81,7 +81,7 @@ def create_price_list(conn: sqlite3.Connection, data: PriceListCreate) -> PriceL
     )
     conn.commit()
     new_id = cur.lastrowid
-    return get_price_list(conn, new_id)  # type: ignore[return-value]
+    return get_price_list(conn, new_id)
 
 
 def update_price_list(

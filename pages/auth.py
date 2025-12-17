@@ -65,7 +65,6 @@ def login_submit(
         value=session_id,
         httponly=True,
         samesite="lax",
-        # secure=True  # pro produkci na HTTPS
     )
     return response
 

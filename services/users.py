@@ -28,8 +28,7 @@ class UsersService:
 
     def create_user(self, data: UserCreate) -> User:
         """
-        Očekává, že `data.password` už je hash (tj. někdo zavolal
-        `AuthService.hash_password`).
+        Očekává, že `data.password` už je hash
         """
         return repo_create_user(self.conn, data)
 
@@ -39,7 +38,7 @@ class UsersService:
         data: UserUpdate,
     ) -> Optional[User]:
         """
-        I tady platí: pokud měníš heslo, dej tam už zahashovaný
+        Tady platí: pokud měníš heslo, dej tam už zahashovaný
         `password`.
         """
         return repo_update_user(self.conn, user_id, data)

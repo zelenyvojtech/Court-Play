@@ -4,37 +4,45 @@
 
 {% block content %}
 <section class="section">
-  <h1 class="section__title">Tenis v Court &amp; Play</h1>
-  <p class="section__subtitle">
-    Rekreační hra, tréninky i závodní tenis na jednom místě.
-  </p>
+  <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto;">
+    <h1 class="section__title">Tenisové služby</h1>
+    <p class="section__subtitle">
+      Ať už hrajete pro radost, nebo chcete vyhrát Wimbledon, máme pro vás to pravé.
+    </p>
+  </div>
 
   <div class="grid grid--3">
     <article class="card">
-      <div class="card__label">Rekreační tenis</div>
-      <div class="card__value">Volné rezervace kurtů</div>
+      <img src="{{ url_for('static', path='img/game.png') }}"
+           style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin-bottom:1rem;" alt="Hra">
+      <div class="card__label">Pro veřejnost</div>
+      <h3 style="margin: 0.5rem 0;">Pronájem kurtů</h3>
       <p class="card__text">
-        Vhodné pro hráče, kteří si chtějí občas zahrát s kamarády nebo rodinou.
-        Rezervaci kurtu provedete snadno online.
+        Přijďte si zahrát s přáteli. Rezervace je snadná a online. Ceny již od 200 Kč/hod.
       </p>
+      <a href="{{ url_for('reservations_entry') }}" class="btn btn--ghost" style="margin-top:auto;">Rezervovat</a>
     </article>
 
     <article class="card">
-      <div class="card__label">Tréninky</div>
-      <div class="card__value">Děti i dospělí</div>
+      <img src="{{ url_for('static', path='img/trainer.png') }}"
+           style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin-bottom:1rem;" alt="Trénink">
+      <div class="card__label">Zlepšení</div>
+      <h3 style="margin: 0.5rem 0;">Tenisová škola</h3>
       <p class="card__text">
-        Individuální i skupinové tréninky pod vedením trenérů. Možnost
-        pravidelných lekcí během celého roku.
+        Individuální lekce s videorozborem nebo skupinové kurzy pro děti. Začít se dá v každém věku.
       </p>
+      <a href="{{ url_for('contact_page') }}" class="btn btn--ghost" style="margin-top:auto;">Poptat trenéra</a>
     </article>
 
     <article class="card">
-      <div class="card__label">Závodní tenis</div>
-      <div class="card__value">Týmové soutěže</div>
+      <img src="{{ url_for('static', path='img/tournament.png') }}"
+           style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin-bottom:1rem;" alt="Turnaj">
+      <div class="card__label">Soutěže</div>
+      <h3 style="margin: 0.5rem 0;">Klubové turnaje</h3>
       <p class="card__text">
-        Zapojte se do klubových týmů a soutěží. Podpora hráčů v tréninku i
-        turnajích.
+        Amatérská liga, víkendové čtyřhry a vánoční turnaj. Změřte síly s ostatními členy klubu.
       </p>
+      <a href="#" class="btn btn--ghost" style="margin-top:auto;">Kalendář akcí</a>
     </article>
   </div>
 </section>

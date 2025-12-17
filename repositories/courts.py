@@ -57,15 +57,14 @@ def create_court(conn: sqlite3.Connection, data: CourtCreate) -> Court:
         """,
         (
             payload["court_name"],
-            int(payload["outdoor"]),   # bool -> 0/1
+            int(payload["outdoor"]),
             payload["status"],
             payload.get("note"),
         ),
     )
     conn.commit()
     new_id = cur.lastrowid
-    # z DB načteme čerstvou verzi a vrátíme ji
-    return get_court(conn, new_id)  # type: ignore[return-value]
+    return get_court(conn, new_id)
 
 
 def update_court(
@@ -89,7 +88,6 @@ def update_court(
     if "outdoor" in update_data:
         update_data["outdoor"] = int(update_data["outdoor"])
 
-    # pokud není co updatovat, prostě vrátíme aktuální stav (nebo None, když kurt neexistuje)
     if not update_data:
         return get_court(conn, courts_id)
 

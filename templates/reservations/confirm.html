@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Potvrzení rezervace{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 600px;">
+        <h1 class="section__title">Potvrzení rezervace</h1>
+        <p class="section__subtitle">Zkontrolujte prosím údaje.</p>
+
+        <div class="card">
+            <table class="table" style="margin-bottom: 2rem;">
+                <tr>
+                    <th>Kurt:</th>
+                    <td><strong>{{ court.court_name }}</strong></td>
+                </tr>
+                <tr>
+                    <th>Datum:</th>
+                    <td>{{ start.strftime('%d. %m. %Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Čas:</th>
+                    <td>{{ start.strftime('%H:%M') }} – {{ end.strftime('%H:%M') }}</td>
+                </tr>
+                <tr>
+                    <th>Cena:</th>
+                    <td style="font-size: 1.25rem; color: #2563eb;">
+                        <strong>{{ "%.0f"|format(price) }} Kč</strong>
+                    </td>
+                </tr>
+            </table>
+
+            <form action="{{ url_for('reservation_create_submit') }}" method="post" style="display:flex; gap:1rem; justify-content: flex-end;">
+                <input type="hidden" name="court_id" value="{{ court.courts_id }}">
+                <input type="hidden" name="start" value="{{ start.isoformat() }}">
+                <input type="hidden" name="duration" value="{{ duration }}">
+                <input type="hidden" name="price_list_id" value="{{ price_list_id }}">
+
+                <a href="{{ url_for('reservations_calendar_ui') }}" class="btn btn--ghost">Zrušit</a>
+
+                <button type="submit" class="btn btn--primary">Závazně rezervovat</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

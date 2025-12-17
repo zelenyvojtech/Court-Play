@@ -12,9 +12,6 @@ class SessionStore:
     """
     Jednoduchý in-memory store:
     session_id -> AuthUser
-
-    V produkci by to šlo spíš do Redis / DB, ale na školní projekt tohle
-    úplně stačí.
     """
 
     def __init__(self) -> None:

@@ -4,47 +4,102 @@
 
 {% block content %}
 <section class="section">
-  <h1 class="section__title">Ceník</h1>
-  <p class="section__subtitle">
-    Orientační ceny kurtů a služeb klubu. Konkrétní sazby můžete spravovat
-    v administrační části aplikace.
-  </p>
+  <div class="grid grid--2" style="gap: 3rem; align-items: start;">
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Služba</th>
-        <th>Popis</th>
-        <th>Cena</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Pronájem kurtu – den</td>
-        <td>1 hodina, antukový kurt</td>
-        <td>od 250 Kč</td>
-      </tr>
-      <tr>
-        <td>Pronájem kurtu – večer</td>
-        <td>1 hodina, osvětlení v ceně</td>
-        <td>od 320 Kč</td>
-      </tr>
-      <tr>
-        <td>Trénink – individuální</td>
-        <td>60 minut s trenérem</td>
-        <td>dle dohody</td>
-      </tr>
-      <tr>
-        <td>Trénink – skupinový</td>
-        <td>Max. 4 hráči</td>
-        <td>dle dohody</td>
-      </tr>
-    </tbody>
-  </table>
+    <div>
+      <h1 class="section__title">Ceník služeb</h1>
+      <p class="section__subtitle">
+        Investujte do své hry. Ceny jsou platné pro aktuální sezónu.
+      </p>
 
-  <p class="prose">
-    Uvedené ceny jsou ilustrační. Skutečné hodnoty se budou načítat z
-    interního ceníku, který spravujete v administrační části aplikace.
-  </p>
+      <h3 style="margin-top: 2rem; border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 0.5rem;">
+        Pronájem kurtů
+      </h3>
+      <table class="table" style="margin-top: 1rem;">
+        <thead>
+          <tr>
+            <th>Typ kurtu</th>
+            <th>Povrch</th>
+            <th style="text-align: right;">Cena / hod</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Venkovní (Outdoor)</strong></td>
+            <td>Antuka</td>
+            <td style="text-align: right;"><strong>400 Kč</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Hala (Indoor)</strong></td>
+            <td>Beton</td>
+            <td style="text-align: right;"><strong>480 Kč</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="prose" style="font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem;">
+        * Cena haly zahrnuje příplatek 20 % oproti základní sazbě. Osvětlení a šatny jsou v ceně.
+      </p>
+
+      <h3 style="margin-top: 3rem; border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 0.5rem;">
+        Trenéři a vybavení
+      </h3>
+      <table class="table" style="margin-top: 1rem;">
+        <thead>
+          <tr>
+            <th>Služba</th>
+            <th style="text-align: right;">Cena</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Individuální trénink (60 min)</td>
+            <td style="text-align: right;">600 Kč + kurt</td>
+          </tr>
+          <tr>
+            <td>Skupinový trénink (4 osoby)</td>
+            <td style="text-align: right;">250 Kč / os.</td>
+          </tr>
+          <tr>
+            <td>Půjčení rakety</td>
+            <td style="text-align: right;">100 Kč</td>
+          </tr>
+          <tr>
+            <td>Vyplétání raket (práce)</td>
+            <td style="text-align: right;">300 Kč</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card" style="margin-top: 3rem; background: #f0fdf4; border-color: #bbf7d0;">
+        <div class="card__label" style="color: #166534;">Tip pro vás</div>
+        <p class="card__text" style="color: #14532d;">
+          <strong>Chcete hrát pravidelně?</strong> Předplaťte si kredit a získejte slevu na každou rezervaci.
+          Více informací na recepci.
+        </p>
+      </div>
+
+    </div>
+
+    <div style="position: sticky; top: 100px;">
+      <img src="{{ url_for('static', path='img/racket.png') }}"
+           alt="Detail rakety"
+           style="width: 100%; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+
+      <div class="card" style="margin-top: 2rem; text-align: center;">
+        <h3 style="margin-top: 0;">Připraveni hrát?</h3>
+        <p>Rezervujte si svůj kurt online během minuty.</p>
+        <a href="{{ url_for('reservations_entry') }}" class="btn btn--primary" style="width: 100%;">
+          Jít na rezervace
+        </a>
+      </div>
+
+      <div style="margin-top: 2rem; font-size: 0.85rem; color: var(--muted);">
+        <p>
+          <em>Poznámka: Přesnou cenu za vaši rezervaci vám systém vždy spočítá automaticky v kalendáři před potvrzením.</em>
+        </p>
+      </div>
+    </div>
+
+  </div>
 </section>
 {% endblock %}

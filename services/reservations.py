@@ -67,11 +67,9 @@ class ReservationsService:
     ) -> None:
         """
         Zkontroluje, že pro daný kurt a interval (start, end) neexistuje:
-        - žádná kolidující rezervace
-        - žádný kolidující time_block
+        - žádná kolidující rezervace nebo time_block
 
-        Při kolizi vyhodí ValueError (v routeru z toho uděláš HTTP 400
-        nebo zobrazíš chybovou hlášku ve UI).
+        Při kolizi vyhodí ValueError (v routeru se z toho udělá HTTP 400)
         """
         reservations = repo_list_reservations_for_court_between(
             self.conn,
@@ -107,7 +105,6 @@ class ReservationsService:
         if court is None:
             raise ValueError("Kurt neexistuje.")
 
-        # ověříme, že délka rezervace odpovídá ceníku
         duration_minutes = int((data.end - data.start).total_seconds() // 60)
         if duration_minutes != price_list.duration_min:
             raise ValueError("Délka rezervace neodpovídá zvolenému ceníku.")

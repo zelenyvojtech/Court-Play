@@ -15,7 +15,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class AuthUser:
     """
     Zjednodušený uživatel, který se bude ukládat do session.
-    Nepleť si to s Pydantic modelem `model.User` – proto jiné jméno.
     """
     user_id: int
     email: str
@@ -51,6 +50,6 @@ class AuthService:
 
     def hash_password(self, password: str) -> str:
         """
-        Vrátí bcrypt hash hesla – použiješ při registraci / změně hesla.
+        Vrátí bcrypt hash hesla – použito při registraci / změně hesla.
         """
         return pwd_context.hash(password)

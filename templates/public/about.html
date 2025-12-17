@@ -4,21 +4,40 @@
 
 {% block content %}
 <section class="section">
-  <h1 class="section__title">O klubu</h1>
-  <p class="section__subtitle">
-    Krátké představení tenisového klubu Court &amp; Play.
-  </p>
+  <div class="grid grid--2" style="gap: 3rem; align-items: center;">
+    <div>
+      <h1 class="section__title">O klubu Court &amp; Play</h1>
+      <p class="section__subtitle">Tradice, sport a přátelství od roku 1998.</p>
 
-  <div class="prose">
-    <p>
-      Court &amp; Play je moderní tenisový areál zaměřený na rekreační i závodní
-      hráče všech věkových kategorií. Nabízíme kvalitní zázemí, přátelskou
-      atmosféru a profesionální přístup trenérů.
-    </p>
-    <p>
-      V areálu najdete zázemí pro hráče, šatny, občerstvení a možnost
-      posezení po hře. Pořádáme turnaje, klubové akce i dětské kempy.
-    </p>
+      <div class="prose">
+        <p>
+          Court &amp; Play vznikl s jednoduchou vizí: vytvořit místo, kde se setkává vášeň pro sport
+          s příjemnou atmosférou. To, co začalo jako dva kurty na louce za městem, je dnes
+          moderní areál, který navštěvují stovky hráčů měsíčně.
+        </p>
+        <p>
+          Nejsme jen "pronajímatel kurtů". Jsme komunita. Pořádáme víkendové turnaje,
+          letní kempy pro děti a večerní grilování pro členy klubu.
+        </p>
+        <h3>Naše zázemí</h3>
+        <ul style="list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text);">
+            <li>Moderní šatny se sprchami a saunou</li>
+            <li>Klubová kavárna s výhledem na centrální kurt</li>
+            <li>Půjčovna raket a vyplétací servis</li>
+            <li>Vlastní parkoviště pro 30 vozů</li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <img src="{{ url_for('static', path='img/clubhouse.png') }}"
+           alt="Klubovna"
+           style="width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <br><br>
+      <img src="{{ url_for('static', path='img/balls.png') }}"
+           alt="Tenisové míčky"
+           style="width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    </div>
   </div>
 </section>
 {% endblock %}

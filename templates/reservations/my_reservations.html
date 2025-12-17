@@ -26,7 +26,7 @@
           <tr>
             <td>{{ r.start.strftime("%d.%m.%Y") }}</td>
             <td>{{ r.start.strftime("%H:%M") }}–{{ r.end.strftime("%H:%M") }}</td>
-            <td>Kurt #{{ r.courts_id }}</td>
+            <td>{{ court_map.get(r.courts_id, 'Kurt #' ~ r.courts_id) }}</td>
             <td>
               {% if r.state == "CANCELLED" %}
                 Zrušeno
